@@ -1,4 +1,6 @@
-# jQuery Tags Input Plugin 
+# jQuery Tags Input Plugin - Now with Colors
+
+This is my fork of the jQuery-Tags-Input Plugin which is enhanced to allow customizing the color of the tags. For usage, see below in "Color" section in the instructions.
 
 Do you use tags to organize content on your site? 
 This plugin will turn your boring tag list into a 
@@ -100,3 +102,28 @@ option to false.
 	   'maxChars' : 0 //if not provided there is no limit,
 	   'placeholderColor' : '#666666'
 	});
+
+## Color
+
+  To customize the colors of your plugin, all you have to do is pass the tagStyle option containing the name of the CSS class, i.e.
+
+  $(selector).tagsInput({
+    tagStyle: 'myTagStyle',
+    //other options ...
+  })
+
+  And in your CSS file you will need to add the styles
+
+  /*sets white background and black text*/
+  .myTagStyle {
+    color: black !important;
+    background: white !important;
+    border: 1px solid black !important;
+  }
+
+  /*sets the color of the closing cross sign*/
+  .myTagStyle a {
+    color: black !important;
+    border: 0 !important;
+  }
+

@@ -18,6 +18,8 @@
 
 	var delimiter = new Array();
 	var tags_callbacks = new Array();
+  var global_tags_settings = {};
+  
 	$.fn.doAutosize = function(o){
 	    var minWidth = $(this).data('minwidth'),
 	        maxWidth = $(this).data('maxwidth'),
@@ -74,7 +76,7 @@
   };
   
 	$.fn.addTag = function(value,options) {
-			options = jQuery.extend({focus:false,callback:true},options);
+			options = jQuery.extend({focus:false,callback:true,tagStyle:'myTagStyle'},options);
 			this.each(function() { 
 				var id = $(this).attr('id');
 
@@ -96,7 +98,7 @@
 				}
 				
 				if (value !='' && skipTag != true) { 
-                    $('<span>').addClass('tag').append(
+                    $('<span>').addClass('tag').addClass(options.tagStyle).append(
                         $('<span>').text(value).append('&nbsp;&nbsp;'),
                         $('<a>', {
                             href  : '#',
@@ -189,8 +191,11 @@
       placeholderColor:'#666666',
       autosize: true,
       comfortZone: 20,
-      inputPadding: 6*2
+      inputPadding: 6*2,
+      tagStyle: 'myTagStyle'
     },options);
+
+    var tags_settings = settings;
 
 		this.each(function() { 
 			if (settings.hide) { 
@@ -200,6 +205,8 @@
 			if (!id || delimiter[$(this).attr('id')]) {
 				id = $(this).attr('id', 'tags' + new Date().getTime()).attr('id');
 			}
+
+      global_tags_settings[id] = tags_settings;
 			
 			var data = jQuery.extend({
 				pid:id,
@@ -261,13 +268,13 @@
 						$(data.fake_input).autocomplete(settings.autocomplete_url, settings.autocomplete);
 						$(data.fake_input).bind('result',data,function(event,data,formatted) {
 							if (data) {
-								$('#'+id).addTag(data[0] + "",{focus:true,unique:(settings.unique)});
+								$('#'+id).addTag(data[0] + "",{focus:true,unique:(settings.unique),tagStyle:settings.tagStyle});
 							}
 					  	});
 					} else if (jQuery.ui.autocomplete !== undefined) {
 						$(data.fake_input).autocomplete(autocomplete_options);
 						$(data.fake_input).bind('autocompleteselect',data,function(event,ui) {
-							$(event.data.real_input).addTag(ui.item.value,{focus:true,unique:(settings.unique)});
+              $(event.data.real_input).addTag(ui.item.value,{focus:true,unique:(settings.unique),tagStyle:settings.tagStyle});
 							return false;
 						});
 					}
@@ -280,7 +287,7 @@
 							var d = $(this).attr('data-default');
 							if ($(event.data.fake_input).val()!='' && $(event.data.fake_input).val()!=d) { 
 								if( (event.data.minChars <= $(event.data.fake_input).val().length) && (!event.data.maxChars || (event.data.maxChars >= $(event.data.fake_input).val().length)) )
-									$(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:true,unique:(settings.unique)});
+                  $(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:true,unique:(settings.unique),tagStyle:settings.tagStyle});
 							} else {
 								$(event.data.fake_input).val($(event.data.fake_input).attr('data-default'));
 								$(event.data.fake_input).css('color',settings.placeholderColor);
@@ -294,7 +301,7 @@
 					if (event.which==event.data.delimiter.charCodeAt(0) || event.which==13 ) {
 					    event.preventDefault();
 						if( (event.data.minChars <= $(event.data.fake_input).val().length) && (!event.data.maxChars || (event.data.maxChars >= $(event.data.fake_input).val().length)) )
-							$(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:true,unique:(settings.unique)});
+              $(event.data.real_input).addTag($(event.data.fake_input).val(),{focus:true,unique:(settings.unique),tagStyle:settings.tagStyle});
 					  	$(event.data.fake_input).resetAutosize(settings);
 						return false;
 					} else if (event.data.autosize) {
@@ -342,7 +349,7 @@
 		var id = $(obj).attr('id');
 		var tags = val.split(delimiter[id]);
 		for (i=0; i<tags.length; i++) { 
-			$(obj).addTag(tags[i],{focus:false,callback:false});
+			$(obj).addTag(tags[i],{focus:false,callback:false,tagStyle:global_tags_settings[id].tagStyle});
 		}
 		if(tags_callbacks[id] && tags_callbacks[id]['onChange'])
 		{

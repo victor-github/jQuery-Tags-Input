@@ -107,23 +107,23 @@ option to false.
 
   To customize the colors of your plugin, all you have to do is pass the tagStyle option containing the name of the CSS class, i.e.
 
-  $(selector).tagsInput({
-    tagStyle: 'myTagStyle',
-    //other options ...
-  })
+    $(selector).tagsInput({
+      tagStyle: 'myTagStyle',
+      //other options ...
+    })
 
   And in your CSS file you will need to add the styles
 
-  /*sets white background and black text*/
-  .myTagStyle {
-    color: black !important;
-    background: white !important;
-    border: 1px solid black !important;
-  }
+    /*sets white background and black text*/
+    .myTagStyle {
+      color: black !important;
+      background: white !important;
+      border: 1px solid black !important;
+    }
 
-  /*sets the color of the closing cross sign*/
-  .myTagStyle a {
-    color: black !important;
-    border: 0 !important;
-  }
+    /*sets the color of the closing cross sign*/
+    .myTagStyle a {
+      color: black !important;
+      border: 0 !important;
+    }
 
